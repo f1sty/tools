@@ -27,8 +27,7 @@ def get_rate(url):
     data = rate.json()
 
     if 'error' in data.keys():
-        print(exchangerate_error_codes[data['error']])
-        exit(1)
+        warn_exit(exchangerate_error_codes[data['error']])
 
     return data['rate']
 
@@ -47,11 +46,15 @@ def parse():
 
     parsed_args = parser.parse_args()
     if parsed_args.key == '':
-        print('Please, set either ER_KEY env variable, or put '
-              'exchangerate-api API key explicitly using --key argument')
-        exit(1)
+        warn_exit('Please, set either ER_KEY env variable, or put '
+                  'exchangerate-api API key explicitly using --key argument')
 
     return parsed_args
+
+
+def warn_exit(msg):
+    print(msg)
+    exit(1)
 
 
 if __name__ == '__main__':
