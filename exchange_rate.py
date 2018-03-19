@@ -17,8 +17,8 @@ exchangerate_error_codes = {
         }
 
 
-def get_rate(request):
-    rate = requests.get(request)
+def get_rate(url):
+    rate = requests.get(url)
 
     if rate.status_code != 200:
         raise Exception(
@@ -33,9 +33,9 @@ def get_rate(request):
     return data['rate']
 
 
-def make_request(args):
-    return '/'.join(['https://v3.exchangerate-api.com/pair', args.key,
-                    args.base.upper(), args.to.upper()])
+def get_url(api_key, base_cur, conv_cur):
+    return '/'.join(['https://v3.exchangerate-api.com/pair', api_key,
+                    base_cur.upper(), conv_cur.upper()])
 
 
 def parse():
@@ -56,6 +56,7 @@ def parse():
 
 if __name__ == '__main__':
     args = parse()
-    rate = get_rate(make_request(args))
+    url = get_url(args.key, args.base, args.to)
+    rate = get_rate(url)
 
     print(rate)
