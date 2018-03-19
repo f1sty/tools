@@ -26,16 +26,16 @@ def get_chart(url):
             for x in chart.find_all('tr') if x.contents[5].strong)
 
 
-def get_url(args):
-    return ('http://www.imdb.com/chart/tvmeter'
-            if args.type == 'tv' else
-            'http://www.imdb.com/chart/moviemeter')
+def get_url(chart_type):
+    return f'http://www.imdb.com/chart/{chart_type}meter'
 
 
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', '--type', choices=['movie', 'tv'],
                         default='tv', help='chart type')
+    parser.add_argument('-n', '--curses', default=False, action='store_true',
+                        help='use ncurses interface')
 
     return parser.parse_args()
 
@@ -80,5 +80,11 @@ def main(stdscr, retreive_url):
 
 
 if __name__ == '__main__':
-    retreive_url = get_url(parse())
-    curses.wrapper(main, retreive_url)
+    args = parse()
+    url = get_url(args.type)
+
+    if args.curses:
+        curses.wrapper(main, url)
+    else:
+        for title, rate in get_chart(url):
+            print(': '.join([title, rate]))
