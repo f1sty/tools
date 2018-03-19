@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+Retreive current exchange rate for specified currencies
+using https://www.exchangerate-api.com/ APIs.
+"""
 import argparse
 from os import getenv
 
