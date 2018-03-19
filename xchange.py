@@ -22,7 +22,7 @@ def get_rate(request):
 
     if rate.status_code != 200:
         raise Exception(
-            'HTTP Exception occured, status code: {}'.format(rate.status_code))
+                f'HTTP Exception occured, status code: {rate.status_code}')
 
     data = rate.json()
 
